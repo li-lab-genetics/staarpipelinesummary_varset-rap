@@ -5,7 +5,7 @@ For more information about how to run or modify it, see
 https://documentation.dnanexus.com/.
 
 ### Applet Usage
-The **staarpipelinesummary_varset** app can summarize the single variant or aggregate test results from the <a href="https://github.com/xihaoli/staarpipeline-rap">**staarpipeline**</a> app, and will
+The **staarpipelinesummary_varset** app can summarize the single variant or aggregate test results generated from the <a href="https://github.com/xihaoli/staarpipeline-rap">**staarpipeline**</a> app, and will
 
 1. summarize these results across all chromosomes and create a unified list of results;
 
