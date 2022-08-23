@@ -1,0 +1,192 @@
+{
+  "name": "staarpipelinesummary_varset_v0.9.6",
+  "title": "Summarizing Results from STAAR Pipeline for Analyzing WGS/WES Data",
+  "summary": "This is a pipeline applet to summarize results from STAAR procedure for analyzing whole-genome/whole-exome sequencing data. For more details about this applet, please see the user manual at https://tinyurl.com/staarpipeline",
+  "description": "For all summary and conditional analyses, an instance type of \"mem2_ssd1_v2_x32\" is recommended.",
+  "dxapi": "1.0.0",
+  "version": "0.9.6",
+  "inputSpec": [
+    {
+      "name": "outfile",
+      "label": "Output file prefix",
+      "help": "Prefix of output file name. The output result files will be multiple .Rdata and .csv objects.",
+      "class": "string",
+      "optional": false
+    },
+    {
+      "name": "test_type",
+      "label": "Valid tests: \"Single\", \"Gene_Centric_Coding\", \"Gene_Centric_Noncoding\", \"ncRNA\", \"Sliding_Window\"",
+      "help": "Only \"Single\", \"Gene_Centric_Coding\", \"Gene_Centric_Noncoding\", \"ncRNA\", \"Sliding_Window\" are valid test types.",
+      "class": "string",
+      "optional": false
+    },
+    {
+      "name": "infiles",
+      "label": "Input array results",
+      "help": "Input results for summary and conditional analysis, must be result files from the staarpipeline applet.",
+      "class": "array:file",
+      "patterns": ["*.RData", "*.Rdata", "*.Rda"],
+      "optional": false
+    },
+    {
+      "name": "infile_prefix",
+      "label": "Prefix of input results",
+      "help": "Prefix of input results (without chromosome number). For example, when summarizing single variant test results of low-density lipoprotein cholesterol (LDL): LDL_single_chr1, LDL_single_chr2,..., LDL_single_chr22, prefix should be \"LDL_single_chr\".",
+      "class": "string",
+      "optional": false
+    },
+    {
+      "name": "known_varlist_rsID",
+      "label": "Known variant list (rsID)",
+      "help": "A comma separated values (.csv) file (first row is the header) saving the known variant list in rsID format to be adjusted for in conditional analysis. The file must include a column named \"SNPS\" for the list of rsIDs of the known variants. In addition, it could also include a column named \"CHR\" as the chromosome number of each SNP (row) for faster retrieval.",
+      "class": "file",
+      "patterns": ["*.csv"],
+      "optional": true
+    },
+    {
+      "name": "known_varlist_4columns",
+      "label": "Known variant list (4 columns)",
+      "help": "A comma separated values (.csv) file (first row is the header) saving the known variant list in 4 columns format to be adjusted for in conditional analysis. The file must include 4 columns with the following names: \"CHR\" (chromosome number), \"POS\" (position), \"REF\" (reference allele), and \"ALT\" (alternative allele).",
+      "class": "file",
+      "patterns": ["*.csv"],
+      "optional": true
+    },
+    {
+      "name": "nullobj_file",
+      "label": "Null model",
+      "help": "An R object saving the fitted null mixed model from STAAR. Must be an .RData or .Rda file.",
+      "class": "file",
+      "patterns": ["*.RData", "*.Rdata", "*.Rda"],
+      "optional": true
+    },
+    {
+      "name": "agds_files",
+      "label": "AGDS files",
+      "help": "Genotype and functional annotation all-in-one GDS (AGDS) files for all chromosomes (1-22) in .gds format. Must be provided if performing conditional analysis.",
+      "class": "array:file",
+      "patterns": ["*.gds"],
+      "optional": true
+    },
+    {
+      "name": "agds_file_name",
+      "label": "Name of AGDS files",
+      "help": "Name of AGDS files (without chromosome number). For example, when performing conditional analysis using AGDS files \"chr1_agds.gds\",..., \"chr22_agds.gds\", the name should be \"chr_agds\".",
+      "class": "string",
+      "optional": true
+    },
+    {
+      "name": "annotation_name_catalog_file",
+      "label": "Annotation name catalog",
+      "help": "A comma separated values (.csv) file containing the name (\"name\") and the corresponding channel name (\"dir\") in the AGDS files. If the AGDS files are generated using FAVORannotator, the .csv file can be downloaded from https://github.com/xihaoli/STAARpipeline-Tutorial/tree/main/FAVORannotator_csv/annotation_name_catalog.csv. Must be provided if performing conditional analysis.",
+      "class": "file",
+      "patterns": ["*.csv"],
+      "optional": true
+    },
+    {
+      "name": "max_maf",
+      "label": "Maximum minor allele frequency for a variant to be included in variant-set test (\"Gene_Centric_Coding\", \"Gene_Centric_Noncoding\", \"ncRNA\", \"Sliding_Window\")",
+      "help": "Note this is the maximum minor allele frequency, not the alternate (coding) allele frequency. If not specified, 0.01 will be used as the default (to perform variant-set analysis for rare variants).",
+      "class": "float",
+      "optional": true,
+      "default": 0.01
+    },
+    {
+      "name": "use_stepwise_selection",
+      "label": "Use stepwise selection for variants in known_varlist_rsID and known_varlist_4columns or not",
+      "help": "Whether to perform stepwise selection for variants in known_varlist_rsID and known_varlist_4columns. Either \"YES\" or \"NO\". If not specified, \"YES\" will be used as the default.",
+      "class": "string",
+      "optional": true,
+      "default": "YES"
+    },
+    {
+      "name": "min_maf_adj",
+      "label": "Minimum minor allele frequency for a variant to be adjusted for in conditional analysis",
+      "help": "Note this is the minimum minor allele frequency, not the alternate (coding) allele frequency. If not specified, 0.01 will be used as the default (to only adjust for common and low-frequency variants in conditional analysis).",
+      "class": "float",
+      "optional": true,
+      "default": 0.01
+    },
+    {
+      "name": "qc_label_dir",
+      "label": "Channel name of the QC label in the AGDS file",
+      "help": "Channel name of the QC label in the AGDS file, where PASS variants should be labeled as \"PASS\". If not specified, \"annotation/filter\" will be used as the default.",
+      "class": "string",
+      "optional": true,
+      "default": "annotation/filter"
+    },
+    {
+      "name": "variant_type",
+      "label": "Type of variant included in the conditional analysis",
+      "help": "Type of variant included in the conditional analysis. Choices include \"SNV\", \"Indel\", or \"variant\". If not specified, \"SNV\" will be used as the default.",
+      "class": "string",
+      "optional": true,
+      "default": "SNV"
+    },
+    {
+      "name": "geno_missing_imputation",
+      "label": "Method of handling missing genotypes",
+      "help": "Method of handling missing genotypes. Either \"mean\" or \"minor\". If not specified, \"mean\" will be used as the default.",
+      "class": "string",
+      "optional": true,
+      "default": "mean"
+    },
+    {
+      "name": "annotation_dir",
+      "label": "Channel name of the annotations in the AGDS file",
+      "help": "Channel name of the annotations in the AGDS file. If not specified, \"annotation/info/FunctionalAnnotation\" will be used as the default, which is consistent with FAVORannotator.",
+      "class": "string",
+      "optional": true,
+      "default": "annotation/info/FunctionalAnnotation"
+    },
+    {
+      "name": "use_annotation_weights",
+      "label": "Use annotations as weights or not",
+      "help": "Use annotations as weights or not. Either \"YES\" or \"NO\". If not specified, \"YES\" will be used as the default.",
+      "class": "string",
+      "optional": true,
+      "default": "YES"
+    },
+    {
+      "name": "annotation_name",
+      "label": "Annotations used in STAAR (multiple annotations should be comma-separated, with no space, like \"aPC.Conservation,aPC.Protein\")",
+      "help": "Annotations used in STAAR. Should be a subset of annotations in the annotation_name_catalog_file (if multiple annotations, they should be comma-separated, with no space, like \"aPC.Conservation,aPC.Protein\"). If not specified, \"CADD,LINSIGHT,FATHMM.XF,aPC.EpigeneticActive,aPC.EpigeneticRepressed,aPC.EpigeneticTranscription,aPC.Conservation,aPC.LocalDiversity,aPC.Mappability,aPC.TF,aPC.Protein\" will be used as the default, which is consistent with FAVORannotator.",
+      "class": "string",
+      "optional": true,
+      "default": "CADD,LINSIGHT,FATHMM.XF,aPC.EpigeneticActive,aPC.EpigeneticRepressed,aPC.EpigeneticTranscription,aPC.Conservation,aPC.LocalDiversity,aPC.Mappability,aPC.TF,aPC.Protein"
+    }
+  ],
+  "outputSpec": [
+    {
+      "name": "results",
+      "help": "",
+      "class": "array:file",
+      "patterns": ["*"]
+    }
+  ],
+  "runSpec": {
+    "file": "src/code.sh",
+    "release": "16.04",
+    "interpreter": "bash",
+    "timeoutPolicy": {
+      "*": {
+        "days": 7
+      }
+    },
+    "distribution": "Ubuntu"
+  },
+  "access": {
+    "network": [
+      "*"
+    ]
+  },
+  "ignoreReuse": false,
+  "regionalOptions": {
+    "aws:us-east-1": {
+      "systemRequirements": {
+        "*": {
+          "instanceType": "mem2_ssd1_v2_x32"
+        }
+      }
+    }
+  }
+}
