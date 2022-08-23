@@ -1,11 +1,11 @@
 # staarpipelinesummary_varset (DNAnexus Platform App)
 
-This is the source code for the staarpipeline app that runs on the DNAnexus Platform.
+This is the source code for the staarpipelinesummary_varset app that runs on the DNAnexus Platform.
 For more information about how to run or modify it, see
 https://documentation.dnanexus.com/.
 
 ### Applet Usage
-The **staarpipelinesummary_varset** app takes the single variant or aggregate test results from the **staarpipeline** app, and will
+The **staarpipelinesummary_varset** app can summarize the single variant or aggregate test results from the <a href="https://github.com/xihaoli/staarpipeline-rap">**staarpipeline**</a> app, and will
 
 1. summarize these results across all chromosomes and create a unified list of results;
 
@@ -14,7 +14,7 @@ The **staarpipelinesummary_varset** app takes the single variant or aggregate te
 Please see the <a href="https://tinyurl.com/staarpipeline">**user manual and tutorial**</a> for detailed usage of staarpipelinesummary_varset app.
 
 ### Cloning an Applet
-To acquire the staarpipeline applet, you will need to compile this applet for your respective DNANexus project, by cloning the repository from github and `dx build` an APPLET into your own workspace.
+To acquire the staarpipelinesummary_varset applet, you will need to compile this applet for your respective DNANexus project, by cloning the repository from github and `dx build` an APPLET into your own workspace.
 
 1. Clone this github repo to some directory:
 
