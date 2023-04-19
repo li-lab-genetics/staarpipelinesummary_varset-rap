@@ -1,5 +1,5 @@
 {
-  "name": "staarpipelinesummary_varset_v0.9.6",
+  "name": "staarpipelinesummary_varset",
   "title": "Summarizing Results from STAAR Pipeline for Analyzing WGS/WES Data",
   "summary": "This is a pipeline applet to summarize results from STAAR procedure for analyzing whole-genome/whole-exome sequencing data. For more details about this applet, please see the user manual at https://tinyurl.com/staarpipeline",
   "description": "For all summary and conditional analyses, an instance type of \"mem2_ssd1_v2_x32\" is recommended.",
@@ -181,7 +181,7 @@
   },
   "ignoreReuse": false,
   "regionalOptions": {
-    "aws:us-east-1": {
+    "aws:eu-west-2": {
       "systemRequirements": {
         "*": {
           "instanceType": "mem2_ssd1_v2_x32"
