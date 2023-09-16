@@ -19,7 +19,7 @@ To acquire the staarpipelinesummary_varset applet, you will need to compile this
 1. Clone this github repo to some directory:
 
 ```commandline
-git clone https://github.com/xihaoli/staarpipelinesummary_varset-rap.git
+git clone https://github.com/li-lab-genetics/staarpipelinesummary_varset-rap.git
 ```
 
 This will create a folder named staarpipelinesummary_varset-rap, you can then:
