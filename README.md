@@ -11,7 +11,7 @@ The **staarpipelinesummary_varset** app can summarize the single variant or aggr
 
 2. perform conditional analysis for (unconditionally) significant single variants or variant sets by adjusting for a given list of known variants.
 
-Please see the <a href="https://tinyurl.com/staarpipeline">**user manual and tutorial**</a> for detailed usage of staarpipelinesummary_varset app.
+Please see the <a href="https://tinyurl.com/staarpipelineapps">**user manual and tutorial**</a> for detailed usage of staarpipelinesummary_varset app.
 
 ### Cloning an Applet
 To acquire the staarpipelinesummary_varset applet, you will need to compile this applet for your respective DNANexus project, by cloning the repository from github and `dx build` an APPLET into your own workspace.
